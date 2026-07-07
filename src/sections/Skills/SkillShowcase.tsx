@@ -1,21 +1,12 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 import type { ReactNode } from "react";
-import { FaReact, FaAngular, FaNodeJs, FaGitAlt } from "react-icons/fa";
+import { FaReact, FaNodeJs, FaGitAlt } from "react-icons/fa";
 
 import {
   SiFlutter,
-  SiTypescript,
-  SiTailwindcss,
-  SiMui,
-  SiJavascript,
-  SiExpress,
-  SiPostman,
-  SiDart,
 } from "react-icons/si";
 
-import { TbApi } from "react-icons/tb";
-import { VscVscode } from "react-icons/vsc";
 import TechnologyGrid from "./TechnologyGrid";
 
 import type { SkillCategoryType } from "./skillsData";

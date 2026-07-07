@@ -14,7 +14,7 @@ const walkFrames = [avatarWalk1, avatarWalk2, avatarWalk3, avatarWalk2];
 export default function AnimatedAvatar() {
   const [state, setState] = useState<AvatarState>("waiting");
 
-  const [frameIndex, setFrameIndex] = useState(0);
+  const [, setFrameIndex] = useState(0);
 
   const [avatarImage, setAvatarImage] = useState(avatarIdle);
 
