@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@theme {
+}
+
+/* ===========================
+   Global
+=========================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #020617;
+  color: white;
+}
+
+/* ===========================
+   Premium Scrollbar
+=========================== */
+
+/* Chrome, Edge, Brave, Opera */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+
+  border: 2px solid #020617;
+
+  background: linear-gradient(
+    180deg,
+    #22d3ee,
+    #0ea5e9,
+    #2563eb
+  );
+
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    #67e8f9,
+    #38bdf8,
+    #3b82f6
+  );
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #22d3ee #020617;
+}
+
+/* ===========================
+   Selection
+=========================== */
+
+::selection {
+  background: rgba(34, 211, 238, 0.35);
+  color: white;
+}
