@@ -1,6 +1,15 @@
+import resume from "../../assets/resume/Mariappan_Resume.pdf";
+
 import ContactCard from "./ContactCard";
 
 export default function ContactContent() {
+  const handleDownloadResume = () => {
+    const link = document.createElement("a");
+    link.href = resume;
+    link.download = "Mariappan_Resume.pdf";
+    link.click();
+  };
+
   return (
     <div
       className="
@@ -91,140 +100,136 @@ export default function ContactContent() {
 
         {/* CTA */}
 
-        {/* Premium CTA */}
+        <div
+          className="
+            flex
+            flex-col
+            items-center
+            justify-between
 
-<div
-  className="
-    flex
-    flex-col
-    items-center
-    justify-between
+            gap-8
 
-    gap-8
+            rounded-3xl
 
-    rounded-3xl
+            border
+            border-cyan-500/10
 
-    border
-    border-cyan-500/10
+            bg-gradient-to-r
+            from-cyan-500/5
+            via-transparent
+            to-blue-500/5
 
-    bg-gradient-to-r
-    from-cyan-500/5
-    via-transparent
-    to-blue-500/5
+            px-8
+            py-8
 
-    px-8
-    py-8
+            lg:flex-row
+          "
+        >
+          <div>
+            <div
+              className="
+                mb-4
 
-    lg:flex-row
-  "
->
-  <div>
-    <div
-      className="
-        mb-4
+                inline-flex
 
-        inline-flex
+                items-center
 
-        items-center
+                gap-2
 
-        gap-2
+                rounded-full
 
-        rounded-full
+                border
 
-        border
+                border-emerald-500/20
 
-        border-emerald-500/20
+                bg-emerald-500/10
 
-        bg-emerald-500/10
+                px-4
+                py-2
 
-        px-4
-        py-2
+                text-sm
 
-        text-sm
+                font-semibold
 
-        font-semibold
+                text-emerald-400
+              "
+            >
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
 
-        text-emerald-400
-      "
-    >
-      <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              Available for Frontend Opportunities
+            </div>
 
-      Available for Frontend Opportunities
-    </div>
+            <h3
+              className="
+                text-3xl
 
-    <h3
-      className="
-        text-3xl
+                font-bold
 
-        font-bold
+                text-white
+              "
+            >
+              Let's work together.
+            </h3>
 
-        text-white
-      "
-    >
-      Let's work together.
-    </h3>
+            <p
+              className="
+                mt-3
 
-    <p
-      className="
-        mt-3
+                max-w-xl
 
-        max-w-xl
+                leading-7
 
-        text-slate-400
+                text-slate-400
+              "
+            >
+              I'm currently open to full-time frontend roles and
+              enterprise application development using React,
+              Angular and Flutter.
+            </p>
+          </div>
 
-        leading-7
-      "
-    >
-      I'm currently open to full-time frontend roles and
-      enterprise application development using React,
-      Angular and Flutter.
-    </p>
-  </div>
+          <div
+            className="
+              flex
 
-  <div
-    className="
-      flex
+              flex-wrap
 
-      flex-wrap
+              gap-4
+            "
+          >
+            <button
+              type="button"
+              onClick={handleDownloadResume}
+              className="
+                rounded-full
 
-      gap-4
-    "
-  >
-    <a
-      href="/resume.pdf"
-      className="
-        rounded-full
+                bg-gradient-to-r
+                from-cyan-500
+                to-blue-600
 
-        bg-gradient-to-r
+                px-8
+                py-4
 
-        from-cyan-500
+                font-semibold
 
-        to-blue-600
+                text-white
 
-        px-8
-        py-4
+                shadow-lg
+                shadow-cyan-500/20
 
-        font-semibold
+                transition-all
+                duration-300
 
-        text-white
+                hover:scale-105
+                hover:shadow-cyan-500/40
 
-        shadow-lg
-
-        shadow-cyan-500/20
-
-        transition-all
-
-        duration-300
-
-        hover:scale-105
-
-        hover:shadow-cyan-500/40
-      "
-    >
-      Download Resume
-    </a>
-  </div>
-</div>
+                active:scale-95
+              "
+            >
+              Download Resume
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
