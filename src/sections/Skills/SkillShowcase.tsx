@@ -1,33 +1,65 @@
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
+
 import { useRef } from "react";
 import type { ReactNode } from "react";
-import { FaReact, FaNodeJs, FaGitAlt } from "react-icons/fa";
+
+import {
+  FaReact,
+  FaNodeJs,
+  FaGitAlt,
+} from "react-icons/fa";
 
 import {
   SiFlutter,
 } from "react-icons/si";
 
 import TechnologyGrid from "./TechnologyGrid";
-
 import type { SkillCategoryType } from "./skillsData";
+
+import usePerformanceMode from "../../hooks/usePerformanceMode";
 
 interface SkillShowcaseProps {
   category: SkillCategoryType;
 }
 
-export default function SkillShowcase({ category }: SkillShowcaseProps) {
+export default function SkillShowcase({
+  category,
+}: SkillShowcaseProps) {
+
+  const reduceMotion = useReducedMotion();
+
+  const {
+    isMobile,
+    enableRotation,
+    enableGlowAnimation,
+  } = usePerformanceMode();
+
   const iconMap: Record<string, ReactNode> = {
-    "Frontend Development": <FaReact className="text-cyan-400" />,
 
-    "Mobile Development": <SiFlutter className="text-sky-400" />,
+    "Frontend Development":
+      <FaReact className="text-cyan-400" />,
 
-    "Backend Integration": <FaNodeJs className="text-emerald-400" />,
+    "Mobile Development":
+      <SiFlutter className="text-sky-400" />,
 
-    "Development Workflow": <FaGitAlt className="text-orange-400" />,
+    "Backend Integration":
+      <FaNodeJs className="text-emerald-400" />,
+
+    "Development Workflow":
+      <FaGitAlt className="text-orange-400" />,
   };
-  const cardRef = useRef<HTMLDivElement>(null);
+
+  const cardRef =
+    useRef<HTMLDivElement>(null);
 
   const mouseX = useMotionValue(500);
+
   const mouseY = useMotionValue(250);
 
   const glowX = useSpring(mouseX, {
@@ -39,54 +71,94 @@ export default function SkillShowcase({ category }: SkillShowcaseProps) {
     stiffness: 160,
     damping: 20,
   });
-  const rotateX = useSpring(useTransform(mouseY, [0, 500], [5, -5]), {
-    stiffness: 140,
-    damping: 18,
-  });
 
-  const rotateY = useSpring(useTransform(mouseX, [0, 1000], [-5, 5]), {
-    stiffness: 140,
-    damping: 18,
-  });
+  const rotateX = useSpring(
+    useTransform(mouseY, [0, 500], [4, -4]),
+    {
+      stiffness: 140,
+      damping: 18,
+    }
+  );
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
+  const rotateY = useSpring(
+    useTransform(mouseX, [0, 1000], [-4, 4]),
+    {
+      stiffness: 140,
+      damping: 18,
+    }
+  );
 
-    const rect = cardRef.current.getBoundingClientRect();
+  const handleMouseMove = (
+    e: React.MouseEvent<HTMLDivElement>
+  ) => {
 
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
+    if (
+      !enableRotation ||
+      !cardRef.current
+    )
+      return;
+
+    const rect =
+      cardRef.current.getBoundingClientRect();
+
+    mouseX.set(
+      e.clientX - rect.left
+    );
+
+    mouseY.set(
+      e.clientY - rect.top
+    );
   };
 
   return (
+
     <motion.div
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => {
-        mouseX.set(500);
-        mouseY.set(250);
+
+        if (enableRotation) {
+
+          mouseX.set(500);
+          mouseY.set(250);
+
+        }
+
       }}
       style={{
-        rotateX: window.innerWidth >= 1024 ? rotateX : 0,
 
-        rotateY: window.innerWidth >= 1024 ? rotateY : 0,
+        rotateX: enableRotation
+          ? rotateX
+          : undefined,
 
-        transformPerspective: 1400,
-        transformStyle: "preserve-3d",
+        rotateY: enableRotation
+          ? rotateY
+          : undefined,
+
+        transformPerspective:
+          enableRotation
+            ? 1400
+            : undefined,
+
+        transformStyle:
+          enableRotation
+            ? "preserve-3d"
+            : undefined,
       }}
       initial={{
         opacity: 0,
-        y: 30,
+        y: 24,
       }}
       animate={{
         opacity: 1,
         y: 0,
       }}
       transition={{
-        duration: 0.55,
+        duration: 0.45,
       }}
       className="
 relative
+
 overflow-hidden
 
 rounded-[24px]
@@ -104,21 +176,24 @@ p-5
 sm:p-6
 lg:p-8
 
-backdrop-blur-xl
+backdrop-blur-md
 lg:backdrop-blur-3xl
+
 shadow-[0_30px_80px_rgba(0,0,0,0.35)]
 lg:shadow-[0_40px_120px_rgba(0,0,0,0.45)]
 
 will-change-transform
 "
     >
-      {/* Main Glow */}
-      <motion.div
-        style={{
-          left: glowX,
-          top: glowY,
-        }}
-        className="
+            {/* Mouse Glow (Desktop Only) */}
+
+      {enableRotation && !reduceMotion && (
+        <motion.div
+          style={{
+            left: glowX,
+            top: glowY,
+          }}
+          className="
 pointer-events-none
 
 absolute
@@ -139,24 +214,36 @@ rounded-full
 
 bg-cyan-400/10
 
-blur-[80px]
+blur-[70px]
 lg:blur-[120px]
 "
-      />
+        />
+      )}
+
+      {/* Animated Background Glow */}
 
       <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.18, 0.28, 0.18],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-        }}
+        animate={
+          enableGlowAnimation
+            ? {
+                scale: [1, 1.08, 1],
+                opacity: [0.18, 0.28, 0.18],
+              }
+            : undefined
+        }
+        transition={
+          enableGlowAnimation
+            ? {
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }
+            : undefined
+        }
         className={`
-          absolute
+absolute
 
-          -right-20
+-right-20
 -top-20
 
 sm:-right-28
@@ -174,40 +261,41 @@ sm:w-[320px]
 lg:h-[420px]
 lg:w-[420px]
 
-          rounded-full
+rounded-full
 
-          bg-gradient-to-br
+bg-gradient-to-br
 
-          ${category.color}
+${category.color}
 
-blur-[90px]
-lg:blur-[160px]        `}
+${isMobile ? "blur-[60px]" : "blur-[150px]"}
+`}
       />
 
-      {/* Secondary Glow */}
+      {/* Static Secondary Glow */}
 
       <div
         className="
-          absolute
+absolute
 
-          bottom-0
-          left-0
+bottom-0
+left-0
 
-         h-52
-w-52
+h-48
+w-48
 
-sm:h-64
-sm:w-64
+sm:h-60
+sm:w-60
 
 lg:h-80
 lg:w-80
 
-          rounded-full
+rounded-full
 
-          bg-cyan-500/5
+bg-cyan-500/5
 
-blur-[70px]
-lg:blur-[120px]        "
+blur-[60px]
+lg:blur-[110px]
+"
       />
 
       <div
@@ -219,43 +307,53 @@ grid
 grid-cols-1
 
 gap-6
+
 sm:gap-8
+
 md:grid-cols-[220px_1fr]
+
 lg:grid-cols-[250px_1fr]
+
 lg:gap-10
 
 items-start
+
 lg:items-center
 "
       >
-        {/* LEFT */}
+                {/* LEFT */}
 
         <div
           className="
-    text-center
+text-center
 
-    lg:text-left
-  "
+lg:text-left
+"
         >
           <motion.div
-            animate={{
-              rotate: [0, 8, 0],
-              scale: [1, 1.05, 1],
-            }}
+            animate={
+              enableGlowAnimation && !isMobile && !reduceMotion
+                ? {
+                    rotate: [0, 6, 0],
+                    scale: [1, 1.04, 1],
+                  }
+                : undefined
+            }
             transition={{
               duration: 8,
               repeat: Infinity,
             }}
             className={`
-                mx-auto
+mx-auto
 lg:mx-0
+
 flex
 
 h-16
 w-16
 
-sm:h-18
-sm:w-18
+sm:h-[72px]
+sm:w-[72px]
 
 lg:h-20
 lg:w-20
@@ -276,32 +374,22 @@ lg:shadow-[0_25px_60px_rgba(0,0,0,0.35)]
           >
             <div
               className="
-    text-3xl
-    sm:text-[34px]
-    lg:text-4xl
+text-3xl
+sm:text-[34px]
+lg:text-4xl
 
-    text-white
-  "
+text-white
+"
             >
               {iconMap[category.title]}
             </div>
           </motion.div>
 
-          <motion.p
-            initial={{
-              opacity: 0,
-              y: 10,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{
-              delay: 0.15,
-            }}
+          <p
             className="
 mt-4
 sm:mt-5
+
 text-[10px]
 sm:text-[11px]
 
@@ -314,27 +402,15 @@ text-cyan-400
 "
           >
             {category.subtitle}
-          </motion.p>
+          </p>
 
-          <motion.h2
-            initial={{
-              opacity: 0,
-              y: 15,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{
-              delay: 0.25,
-            }}
+          <h2
             className="
 mt-4
 
 text-[30px]
 sm:text-[34px]
 lg:text-[38px]
-
 
 font-black
 
@@ -344,20 +420,9 @@ text-white
 "
           >
             {category.title}
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{
-              opacity: 0,
-              y: 15,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{
-              delay: 0.35,
-            }}
+          <p
             className="
 mt-4
 
@@ -371,20 +436,9 @@ text-slate-400
 "
           >
             {category.description}
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{
-              opacity: 0,
-              scale: 0.9,
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-            }}
-            transition={{
-              delay: 0.45,
-            }}
+          <div
             className="
 mt-6
 
@@ -414,7 +468,7 @@ text-cyan-300
 "
           >
             {category.experience}
-          </motion.div>
+          </div>
         </div>
 
         {/* RIGHT */}
@@ -433,7 +487,8 @@ p-4
 sm:p-5
 lg:p-6
 
-backdrop-blur-xl
+backdrop-blur-md
+lg:backdrop-blur-xl
 "
         >
           <h3
@@ -452,17 +507,13 @@ text-white
             Technologies
           </h3>
 
-          <div
-            className="
-    w-full
-
-    overflow-hidden
-  "
-          >
-            <TechnologyGrid technologies={category.technologies} />
-          </div>
+          <TechnologyGrid
+            technologies={category.technologies}
+          />
         </div>
+
       </div>
+
     </motion.div>
-  );
+     );
 }

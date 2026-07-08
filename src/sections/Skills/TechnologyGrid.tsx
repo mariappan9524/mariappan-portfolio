@@ -1,5 +1,12 @@
-import { motion } from "framer-motion";
-import type { ReactNode } from "react";
+import {
+  memo,
+  type ReactNode,
+} from "react";
+
+import {
+  motion,
+  useReducedMotion,
+} from "framer-motion";
 
 import {
   FaReact,
@@ -25,6 +32,8 @@ import {
 import { TbApi } from "react-icons/tb";
 import { VscVscode } from "react-icons/vsc";
 
+import usePerformanceMode from "../../hooks/usePerformanceMode";
+
 interface Props {
   technologies: string[];
 }
@@ -49,155 +58,167 @@ const iconMap: Record<string, ReactNode> = {
   Postman: <SiPostman className="text-orange-500" />,
 };
 
-export default function TechnologyGrid({
+function TechnologyGrid({
   technologies,
 }: Props) {
-  const isDesktop =
-    typeof window !== "undefined" &&
-    window.innerWidth >= 1024;
+
+  const reduceMotion = useReducedMotion();
+
+  const {
+    isMobile,
+  } = usePerformanceMode();
+
+  const enableHover = !isMobile;
 
   return (
+
     <div
       className="
-        grid
-        grid-cols-2
-        gap-3
-        sm:gap-4
-      "
+grid
+grid-cols-2
+
+gap-3
+sm:gap-4
+"
     >
+
       {technologies.map((tech, index) => (
+
         <motion.div
           key={tech}
           initial={{
             opacity: 0,
-            y: 20,
-            scale: 0.96,
+            y: isMobile ? 8 : 20,
           }}
           animate={{
             opacity: 1,
             y: 0,
-            scale: 1,
           }}
           transition={{
-            delay: index * 0.05,
-            type: "spring",
-            stiffness: 220,
-            damping: 18,
+            duration: isMobile ? 0.18 : 0.35,
+            delay: index * 0.03,
           }}
           whileHover={
-            isDesktop
+            enableHover
               ? {
-                  y: -8,
-                  scale: 1.04,
+                  y: -6,
+                  scale: 1.03,
                 }
               : undefined
           }
           whileTap={{
-            scale: 0.985,
+            scale: 0.98,
           }}
           className="
-            group
-            relative
-            overflow-hidden
+group
+relative
 
-            rounded-xl
+overflow-hidden
 
-            border
-            border-white/10
+rounded-xl
 
-            bg-gradient-to-br
-            from-white/[0.05]
-            to-white/[0.02]
+border
+border-white/10
 
-            backdrop-blur-md
-            lg:backdrop-blur-xl
+bg-gradient-to-br
+from-white/[0.05]
+to-white/[0.02]
 
-            p-3
-            sm:p-4
+backdrop-blur-sm
+lg:backdrop-blur-xl
 
-            transition-transform
-            transition-colors
-            transition-shadow
-            duration-500
+p-3
+sm:p-4
 
-            hover:border-cyan-400/40
-            hover:bg-cyan-500/[0.05]
-            lg:hover:shadow-[0_24px_70px_rgba(34,211,238,0.20)]
+transition-all
+duration-300
 
-            will-change-transform
-          "
+hover:border-cyan-400/40
+hover:bg-cyan-500/[0.05]
+
+lg:hover:shadow-[0_18px_50px_rgba(34,211,238,0.18)]
+
+will-change-transform
+"
         >
-          {/* Hover Glow */}
+                      {/* Hover Glow */}
 
           <div
             className="
-              absolute
-              left-0
-              top-0
+absolute
+left-0
+top-0
 
-              h-px
-              w-full
+h-px
+w-full
 
-              bg-gradient-to-r
-              from-transparent
-              via-white/20
-              to-transparent
+bg-gradient-to-r
+from-transparent
+via-white/20
+to-transparent
 
-              opacity-0
+opacity-0
 
-              transition-opacity
-              duration-500
+transition-opacity
+duration-300
 
-              group-hover:opacity-100
-              group-hover:scale-125
-            "
+group-hover:opacity-100
+"
           />
 
           <div
             className="
-              absolute
-              -right-10
-              -top-10
+absolute
 
-              h-36
-              w-36
+-right-10
+-top-10
 
-              rounded-full
+h-36
+w-36
 
-              bg-cyan-400/15
+rounded-full
 
-              blur-[55px]
-              lg:blur-[80px]
+bg-cyan-400/12
 
-              opacity-0
+blur-[40px]
+lg:blur-[70px]
 
-              transition-opacity
-              duration-500
+opacity-0
 
-              group-hover:opacity-100
-            "
+transition-opacity
+duration-300
+
+group-hover:opacity-100
+"
           />
 
           <div
             className="
-              relative
+relative
 
-              flex
-              items-center
+flex
+items-center
 
-              gap-3
-              sm:gap-4
-            "
+gap-3
+sm:gap-4
+"
           >
-                        <motion.div
-              animate={{
-                y: [0, -3, 0],
-              }}
-              whileHover={
-                isDesktop
+
+            {/* Icon */}
+
+            <motion.div
+              animate={
+                !reduceMotion && !isMobile
                   ? {
-                      rotate: 10,
-                      scale: 1.18,
+                      y: [0, -3, 0],
+                    }
+                  : undefined
+              }
+              whileHover={
+                enableHover
+                  ? {
+                      rotate: 8,
+                      scale: 1.12,
                     }
                   : undefined
               }
@@ -209,127 +230,130 @@ export default function TechnologyGrid({
                   ease: "easeInOut",
                 },
                 rotate: {
-                  duration: 0.25,
+                  duration: 0.2,
                 },
                 scale: {
-                  duration: 0.25,
+                  duration: 0.2,
                 },
               }}
               className="
-                flex
+flex
 
-                h-10
-                w-10
+h-10
+w-10
 
-                sm:h-11
-                sm:w-11
+sm:h-11
+sm:w-11
 
-                lg:h-12
-                lg:w-12
+lg:h-12
+lg:w-12
 
-                items-center
-                justify-center
+items-center
+justify-center
 
-                rounded-xl
+rounded-xl
 
-                bg-white/[0.06]
+bg-white/[0.06]
 
-                text-xl
-                sm:text-2xl
-              "
+text-xl
+sm:text-2xl
+"
             >
               {iconMap[tech]}
             </motion.div>
 
-            <motion.div
-              whileHover={
-                isDesktop
-                  ? {
-                      x: 3,
-                    }
-                  : undefined
-              }
-              transition={{
-                duration: 0.2,
-              }}
-            >
+            {/* Text */}
+
+            <div>
+
               <h4
                 className="
-                  text-sm
-                  sm:text-[15px]
+text-sm
+sm:text-[15px]
 
-                  font-semibold
+font-semibold
 
-                  text-white
+text-white
 
-                  transition-colors
-                  duration-300
+transition-colors
+duration-300
 
-                  group-hover:text-cyan-200
-                "
+group-hover:text-cyan-200
+"
               >
                 {tech}
               </h4>
 
               <p
                 className="
-                  mt-1
+mt-1
 
-                  text-[11px]
-                  sm:text-xs
+text-[11px]
+sm:text-xs
 
-                  text-slate-400
+text-slate-400
 
-                  transition-colors
-                  duration-300
+transition-colors
+duration-300
 
-                  group-hover:text-slate-300
-                "
+group-hover:text-slate-300
+"
               >
                 Professional Experience
               </p>
-            </motion.div>
+
+            </div>
+
           </div>
 
-          <motion.div
-            initial={{
-              opacity: 0,
-              scaleX: 0.2,
-            }}
-            whileHover={
-              isDesktop
-                ? {
-                    opacity: 1,
-                    scaleX: 1,
-                  }
-                : undefined
-            }
-            transition={{
-              duration: 0.35,
-            }}
-            className="
-              absolute
+          {/* Bottom Line */}
 
-              bottom-0
+          {!isMobile && (
 
-              left-4
-              right-4
+            <motion.div
+              initial={{
+                opacity: 0,
+                scaleX: 0.2,
+              }}
+              whileHover={{
+                opacity: 1,
+                scaleX: 1,
+              }}
+              transition={{
+                duration: 0.3,
+              }}
+              className="
+absolute
 
-              sm:left-6
-              sm:right-6
+bottom-0
 
-              h-px
+left-4
+right-4
 
-              origin-left
+sm:left-6
+sm:right-6
 
-              bg-gradient-to-r
-              from-cyan-400/60
-              via-cyan-300/20
-              to-transparent
-            "
-          />
+h-px
+
+origin-left
+
+bg-gradient-to-r
+from-cyan-400/60
+via-cyan-300/20
+to-transparent
+"
+            />
+
+          )}
+
         </motion.div>
+
       ))}
+
     </div>
+
   );
+
 }
+
+export default memo(TechnologyGrid);

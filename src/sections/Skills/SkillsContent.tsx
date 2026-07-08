@@ -1,25 +1,51 @@
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Laptop2, Smartphone, Database, Wrench } from "lucide-react";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+} from "framer-motion";
+
+import {
+  Laptop2,
+  Smartphone,
+  Database,
+  Wrench,
+} from "lucide-react";
 
 import { skillsData } from "./skillsData";
 import SkillShowcase from "./SkillShowcase";
 
+import usePerformanceMode from "../../hooks/usePerformanceMode";
+
 export default function SkillsContent() {
+
   const [activeTab, setActiveTab] = useState(0);
 
   const activeSkill = skillsData[activeTab];
 
-  const tabIcons = [Laptop2, Smartphone, Database, Wrench];
+  const reduceMotion = useReducedMotion();
+
+  const {
+    isMobile,
+    enableGlowAnimation,
+  } = usePerformanceMode();
+
+  const tabIcons = [
+    Laptop2,
+    Smartphone,
+    Database,
+    Wrench,
+  ];
 
   return (
     <div className="mx-auto max-w-5xl">
+
       {/* Navigation */}
 
       <motion.div
         initial={{
           opacity: 0,
-          y: 20,
+          y: 16,
         }}
         whileInView={{
           opacity: 1,
@@ -29,229 +55,284 @@ export default function SkillsContent() {
           once: true,
         }}
         transition={{
-          duration: 0.6,
+          duration: 0.45,
         }}
         className="flex justify-center px-2"
       >
+
         <div
           className="
-            relative
+relative
 
-            inline-flex
-            items-center
+inline-flex
+items-center
 
-            max-w-full
-            overflow-x-auto
-            scrollbar-hide
+max-w-full
 
-            rounded-full
+overflow-x-auto
 
-            border
-            border-white/10
+scrollbar-hide
 
-            bg-white/[0.04]
+rounded-full
 
-            p-2
+border
+border-white/10
 
-            backdrop-blur-lg
-            lg:backdrop-blur-2xl
+bg-white/[0.04]
 
-            shadow-[0_10px_40px_rgba(0,0,0,0.25)]
-          "
+p-2
+
+backdrop-blur-md
+lg:backdrop-blur-2xl
+
+shadow-[0_10px_40px_rgba(0,0,0,0.22)]
+"
         >
+
+          {/* Top Glow */}
+
           <motion.div
-            animate={{
-              opacity: [0.4, 0.9, 0.4],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            animate={
+              enableGlowAnimation
+                ? {
+                    opacity: [0.35, 0.75, 0.35],
+                  }
+                : undefined
+            }
+            transition={
+              enableGlowAnimation
+                ? {
+                    duration: 4,
+                    repeat: Infinity,
+                  }
+                : undefined
+            }
             className="
-              pointer-events-none
+pointer-events-none
 
-              absolute
-              left-8
-              right-8
-              top-0
+absolute
 
-              h-px
+left-8
+right-8
+top-0
 
-              bg-gradient-to-r
-              from-transparent
-              via-cyan-400/40
-              to-transparent
-            "
+h-px
+
+bg-gradient-to-r
+from-transparent
+via-cyan-400/35
+to-transparent
+"
           />
 
           {skillsData.map((item, index) => {
+
             const Icon = tabIcons[index];
 
             return (
+
               <button
                 key={item.title}
                 onClick={() => setActiveTab(index)}
-                aria-label={item.title}
                 title={item.title}
+                aria-label={item.title}
                 className="
-        group
-        relative
-        overflow-hidden
+group
 
-        rounded-full
+relative
 
-        p-3
-        sm:px-5
-        sm:py-3
-        lg:px-6
+overflow-hidden
 
-        transition-all
-        duration-300
-      "
+rounded-full
+
+p-3
+
+sm:px-5
+sm:py-3
+
+lg:px-6
+
+transition-all
+duration-300
+"
               >
+
                 {activeTab === index && (
+
                   <motion.div
                     layoutId="skills-pill"
                     transition={{
                       type: "spring",
                       stiffness: 320,
                       damping: 28,
-                      mass: 0.8,
                     }}
                     className={`
-            absolute
-            inset-0
+absolute
+inset-0
 
-            rounded-full
+rounded-full
 
-            border
-            border-white/15
+border
+border-white/15
 
-            bg-gradient-to-r
+bg-gradient-to-r
 
-            ${item.color}
+${item.color}
 
-            opacity-25
-
-            shadow-[0_0_30px_rgba(255,255,255,0.08)]
-          `}
+opacity-25
+`}
                   />
+
                 )}
 
-                {/* Hover Glow */}
                 <div
                   className="
-          absolute
-          inset-0
+absolute
+inset-0
 
-          scale-0
+scale-0
 
-          rounded-full
+rounded-full
 
-          bg-white/5
+bg-white/5
 
-          transition-transform
-          duration-300
+transition-transform
+duration-300
 
-          group-hover:scale-100
-        "
+group-hover:scale-100
+"
                 />
 
                 <span
                   className={`
-          relative
-          z-10
+relative
+z-10
 
-          flex
-          items-center
-          justify-center
+flex
+items-center
+justify-center
 
-          gap-2
+gap-2
 
-          font-semibold
+font-semibold
 
-          transition-colors
-          duration-300
+transition-colors
 
-          ${
-            activeTab === index
-              ? "text-white"
-              : "text-slate-400 group-hover:text-white"
-          }
-        `}
+${
+  activeTab === index
+    ? "text-white"
+    : "text-slate-400 group-hover:text-white"
+}
+`}
                 >
+
                   <motion.div
-                    animate={{
-                      rotate: activeTab === index ? [0, -5, 5, 0] : 0,
-                      scale: activeTab === index ? [1, 1.08, 1] : 1,
-                    }}
+                    animate={
+                      !reduceMotion &&
+                      activeTab === index &&
+                      !isMobile
+                        ? {
+                            rotate: [0, -5, 5, 0],
+                            scale: [1, 1.08, 1],
+                          }
+                        : undefined
+                    }
                     transition={{
                       duration: 0.45,
                     }}
                   >
-                    <Icon size={18} className="sm:size-4" />
+
+                    <Icon size={18} />
+
                   </motion.div>
 
-                  <span className="hidden sm:inline text-sm">{item.title}</span>
+                  <span className="hidden sm:inline text-sm">
+
+                    {item.title}
+
+                  </span>
+
                 </span>
+
               </button>
+
             );
+
           })}
         </div>
       </motion.div>
+            {/* Showcase */}
 
-      {/* Showcase */}
+      <div
+        className="
+mt-5
 
-      <div className="mt-5 min-h-[420px] sm:min-h-[460px] lg:min-h-[500px]">
-        <AnimatePresence mode="wait">
+min-h-[420px]
+sm:min-h-[460px]
+lg:min-h-[500px]
+"
+      >
+        <AnimatePresence
+          mode="wait"
+          initial={false}
+        >
           <motion.div
             key={activeSkill.title}
             initial={{
               opacity: 0,
-              y: 20,
-              scale: 0.98,
+              y: isMobile ? 10 : 20,
             }}
             animate={{
               opacity: 1,
               y: 0,
-              scale: 1,
             }}
             exit={{
               opacity: 0,
-              y: -20,
-              scale: 0.98,
+              y: isMobile ? -10 : -20,
             }}
             transition={{
-              duration: 0.45,
-              ease: [0.22, 1, 0.36, 1],
+              duration: isMobile ? 0.22 : 0.40,
+              ease: "easeOut",
             }}
           >
-            <SkillShowcase category={activeSkill} />
+            <SkillShowcase
+              category={activeSkill}
+            />
           </motion.div>
         </AnimatePresence>
       </div>
 
       {/* Indicator */}
 
-      <div className="mt-6 flex justify-center gap-2">
+      <div
+        className="
+mt-6
+
+flex
+justify-center
+
+gap-2
+"
+      >
         {skillsData.map((_, index) => (
           <button
             key={index}
+            aria-label={`Skill ${index + 1}`}
             onClick={() => setActiveTab(index)}
             className={`
-              transition-all
-              duration-300
+transition-all
+duration-300
 
-              ${
-                activeTab === index
-                  ? "h-2 w-10 rounded-full bg-cyan-400"
-                  : "h-2 w-2 rounded-full bg-white/20 hover:bg-white/40"
-              }
-            `}
+${
+  activeTab === index
+    ? "h-2 w-10 rounded-full bg-cyan-400"
+    : "h-2 w-2 rounded-full bg-white/20 hover:bg-white/40"
+}
+`}
           />
         ))}
       </div>
+
     </div>
   );
 }
