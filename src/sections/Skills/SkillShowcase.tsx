@@ -104,8 +104,8 @@ p-5
 sm:p-6
 lg:p-8
 
-backdrop-blur-3xl
-
+backdrop-blur-xl
+lg:backdrop-blur-3xl
 shadow-[0_30px_80px_rgba(0,0,0,0.35)]
 lg:shadow-[0_40px_120px_rgba(0,0,0,0.45)]
 
@@ -218,10 +218,10 @@ grid
 
 grid-cols-1
 
-gap-8
-
+gap-6
+sm:gap-8
+md:grid-cols-[220px_1fr]
 lg:grid-cols-[250px_1fr]
-
 lg:gap-10
 
 items-start
@@ -300,8 +300,8 @@ lg:shadow-[0_25px_60px_rgba(0,0,0,0.35)]
               delay: 0.15,
             }}
             className="
-mt-5
-
+mt-4
+sm:mt-5
 text-[10px]
 sm:text-[11px]
 
@@ -331,9 +331,10 @@ text-cyan-400
             className="
 mt-4
 
-text-3xl
+text-[30px]
 sm:text-[34px]
 lg:text-[38px]
+
 
 font-black
 

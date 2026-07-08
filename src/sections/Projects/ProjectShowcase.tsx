@@ -17,6 +17,10 @@ export default function ProjectShowcase({
 }: ProjectShowcaseProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
+  const isDesktop =
+    typeof window !== "undefined" &&
+    window.innerWidth >= 1024;
+
   const mouseX = useMotionValue(600);
   const mouseY = useMotionValue(350);
 
@@ -49,7 +53,7 @@ export default function ProjectShowcase({
   const handleMouseMove = (
     e: React.MouseEvent<HTMLDivElement>
   ) => {
-    if (!cardRef.current) return;
+    if (!isDesktop || !cardRef.current) return;
 
     const rect =
       cardRef.current.getBoundingClientRect();
@@ -57,55 +61,66 @@ export default function ProjectShowcase({
     mouseX.set(e.clientX - rect.left);
     mouseY.set(e.clientY - rect.top);
   };
-
   return (
-    <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => {
+  <motion.div
+    ref={cardRef}
+    onMouseMove={handleMouseMove}
+    onMouseLeave={() => {
+      if (isDesktop) {
         mouseX.set(600);
         mouseY.set(350);
-      }}
-      style={{
-        rotateX,
-        rotateY,
-        transformPerspective: 1800,
-        transformStyle: "preserve-3d",
-      }}
-      initial={{
-        opacity: 0,
-        y: 25,
-      }}
-      animate={{
-        opacity: 1,
-        y: 0,
-      }}
-      transition={{
-        duration: 0.5,
-      }}
-      className="
-        relative
-        overflow-hidden
+      }
+    }}
+    style={{
+      rotateX: isDesktop ? rotateX : undefined,
+      rotateY: isDesktop ? rotateY : undefined,
+      transformPerspective: isDesktop ? 1800 : undefined,
+      transformStyle: isDesktop
+        ? "preserve-3d"
+        : undefined,
+    }}
+    initial={{
+      opacity: 0,
+      y: 25,
+    }}
+    animate={{
+      opacity: 1,
+      y: 0,
+    }}
+    transition={{
+      duration: 0.5,
+    }}
+    className="
+      relative
+      overflow-hidden
 
-        rounded-[28px]
+      rounded-[24px]
+      lg:rounded-[28px]
 
-        border
-        border-white/10
+      border
+      border-white/10
 
-        bg-gradient-to-br
-        from-slate-900/95
-        via-slate-900/90
-        to-slate-950
+      bg-gradient-to-br
+      from-slate-900/95
+      via-slate-900/90
+      to-slate-950
 
-        p-6
+      p-4
+      sm:p-5
+      lg:p-6
 
-        backdrop-blur-3xl
+      backdrop-blur-xl
+      lg:backdrop-blur-3xl
 
-        shadow-[0_40px_120px_rgba(0,0,0,0.45)]
-      "
-    >
-      {/* Mouse Glow */}
+      shadow-[0_30px_80px_rgba(0,0,0,0.35)]
+      lg:shadow-[0_40px_120px_rgba(0,0,0,0.45)]
 
+      will-change-transform
+    "
+  >
+    {/* Mouse Glow */}
+
+    {isDesktop && (
       <motion.div
         style={{
           left: glowX,
@@ -130,154 +145,178 @@ export default function ProjectShowcase({
           blur-[100px]
         "
       />
+    )}
 
-      {/* Animated Background Glow */}
+    {/* Animated Background Glow */}
+
+    <motion.div
+      animate={{
+        scale: [1, 1.08, 1],
+        opacity: [0.15, 0.28, 0.15],
+      }}
+      transition={{
+        duration: 8,
+        repeat: Infinity,
+      }}
+      className={`
+        absolute
+
+        -right-24
+        -top-24
+
+        lg:-right-36
+        lg:-top-36
+
+        h-[240px]
+        w-[240px]
+
+        sm:h-[300px]
+        sm:w-[300px]
+
+        lg:h-[380px]
+        lg:w-[380px]
+
+        rounded-full
+
+        bg-gradient-to-br
+
+        ${project.accent}
+
+        blur-[90px]
+        lg:blur-[140px]
+      `}
+    />
+
+    {/* Main Layout */}
+
+    <div
+      className="
+        relative
+
+        grid
+
+        grid-cols-1
+
+        items-start
+
+        gap-6
+        lg:gap-8
+
+        lg:grid-cols-[1.3fr_0.7fr]
+      "
+    >
+      {/* LEFT SIDE */}
 
       <motion.div
+        initial={{
+          opacity: 0,
+          x: -25,
+        }}
         animate={{
-          scale: [1, 1.08, 1],
-          opacity: [0.15, 0.28, 0.15],
+          opacity: 1,
+          x: 0,
         }}
         transition={{
-          duration: 8,
-          repeat: Infinity,
+          delay: 0.15,
         }}
-        className={`
-          absolute
-
-          -right-36
-          -top-36
-
-          h-[380px]
-          w-[380px]
-
-          rounded-full
-
-          bg-gradient-to-br
-
-          ${project.accent}
-
-          blur-[140px]
-        `}
-      />
-
-      {/* Main Layout */}
-
-      <div
-        className="
-          relative
-
-          grid
-
-          items-start
-
-          gap-6
-
-          lg:grid-cols-[1.3fr_0.7fr]
-        "
       >
-        {/* LEFT SIDE */}
+        {/* Browser Frame */}
 
-        <motion.div
-          initial={{
-            opacity: 0,
-            x: -25,
-          }}
-          animate={{
-            opacity: 1,
-            x: 0,
-          }}
-          transition={{
-            delay: 0.15,
-          }}
+        <div
+          className="
+            relative
+
+            overflow-hidden
+
+            rounded-[20px]
+            lg:rounded-[24px]
+
+            border
+            border-white/10
+
+            bg-slate-900
+
+            shadow-[0_20px_50px_rgba(0,0,0,0.35)]
+            lg:shadow-[0_25px_70px_rgba(0,0,0,0.45)]
+          "
         >
-                      {/* Browser Frame */}
+          {/* Floating Bottom Glow */}
 
           <div
             className="
-              relative
+              absolute
 
-              overflow-hidden
+              -bottom-10
+              left-1/2
 
-              rounded-[24px]
+              h-24
+              w-24
 
-              border
+              lg:h-32
+              lg:w-32
+
+              -translate-x-1/2
+
+              rounded-full
+
+              bg-cyan-500/20
+
+              blur-[45px]
+              lg:blur-[70px]
+            "
+          />
+
+          {/* Browser Header */}
+
+          <div
+            className="
+              flex
+              items-center
+              justify-between
+
+              border-b
               border-white/10
 
-              bg-slate-900
+              bg-white/[0.04]
 
-              shadow-[0_25px_70px_rgba(0,0,0,0.45)]
+              px-3
+              py-2
+
+              sm:px-4
             "
           >
-            {/* Floating Bottom Glow */}
-
-            <div
-              className="
-                absolute
-
-                -bottom-10
-                left-1/2
-
-                h-32
-                w-32
-
-                -translate-x-1/2
-
-                rounded-full
-
-                bg-cyan-500/20
-
-                blur-[70px]
-              "
-            />
-
-            {/* Browser Header */}
-
-            <div
-              className="
-                flex
-                items-center
-                justify-between
-
-                border-b
-                border-white/10
-
-                bg-white/[0.04]
-
-                px-4
-                py-2
-              "
-            >
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-red-500" />
-
-                <div className="h-3 w-3 rounded-full bg-yellow-500" />
-
-                <div className="h-3 w-3 rounded-full bg-green-500" />
-              </div>
-
-              <div
-                className="
-                  rounded-full
-
-                  bg-white/5
-
-                  px-4
-                  py-1
-
-                  text-[11px]
-
-                  text-slate-400
-                "
-              >
-                Enterprise Application
-              </div>
-
-              <div className="w-10" />
+            <div className="flex items-center gap-2">
+              <div className="h-3 w-3 rounded-full bg-red-500" />
+              <div className="h-3 w-3 rounded-full bg-yellow-500" />
+              <div className="h-3 w-3 rounded-full bg-green-500" />
             </div>
 
-            {/* Reflection */}
+            <div
+              className="
+                rounded-full
 
+                bg-white/5
+
+                px-3
+                py-1
+
+                sm:px-4
+
+                text-[10px]
+                sm:text-[11px]
+
+                text-slate-400
+              "
+            >
+              Enterprise Application
+            </div>
+
+            <div className="w-8 sm:w-10" />
+          </div>
+
+          {/* Reflection */}
+
+          {isDesktop && (
             <motion.div
               animate={{
                 x: ["-140%", "180%"],
@@ -307,406 +346,271 @@ export default function ProjectShowcase({
                 to-transparent
               "
             />
+          )}
 
-            {/* Screenshot */}
+          {/* Screenshot */}
 
-            <motion.img
-              src={project.image}
-              alt={project.title}
-              initial={{
-                scale: 1.02,
-              }}
-              whileHover={{
-                scale: 1.05,
-              }}
-              transition={{
-                duration: 0.35,
-              }}
-              className="
-                w-full
+          <motion.img
+            src={project.image}
+            alt={project.title}
+            initial={{
+              scale: 1.02,
+            }}
+            whileHover={
+              isDesktop
+                ? {
+                    scale: 1.05,
+                  }
+                : undefined
+            }
+            transition={{
+              duration: 0.35,
+            }}
+            className="
+              w-full
 
-                h-[320px]
+              h-[240px]
+              sm:h-[280px]
+              lg:h-[320px]
 
-                object-cover
-                object-top
-              "
-            />
-          </div>
-        </motion.div>
+              object-cover
+              object-top
+            "
+          />
+        </div>
+      </motion.div>
+            {/* RIGHT SIDE */}
 
-        {/* RIGHT SIDE */}
+      <motion.div
+        initial={{
+          opacity: 0,
+          x: 25,
+        }}
+        animate={{
+          opacity: 1,
+          x: 0,
+        }}
+        transition={{
+          delay: 0.2,
+        }}
+      >
+        <div className="space-y-4">
+          {/* Category */}
 
-        <motion.div
-          initial={{
-            opacity: 0,
-            x: 25,
-          }}
-          animate={{
-            opacity: 1,
-            x: 0,
-          }}
-          transition={{
-            delay: 0.2,
-          }}
-        >
-          <div className="space-y-4">
-                        {/* Category */}
-
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25 }}
-            >
-              <span
-                className={`
-                  inline-flex
-                  items-center
-
-                  rounded-full
-
-                  bg-gradient-to-r
-
-                  ${project.accent}
-
-                  px-3
-                  py-1.5
-
-                  text-[11px]
-                  font-semibold
-
-                  uppercase
-                  tracking-[0.22em]
-
-                  text-white
-                `}
-              >
-                {project.category}
-              </span>
-            </motion.div>
-
-            {/* Title */}
-
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <h2
-                className="
-                  text-3xl
-lg:text-[38px]
-
-                  font-black
-
-                  leading-tight
-
-                  text-white
-                "
-              >
-                {project.title}
-              </h2>
-
-              <p
-                className="
-                  mt-1
-
-                  text-base
-
-                  font-medium
-
-                  text-cyan-400
-                "
-              >
-                {project.subtitle}
-              </p>
-            </motion.div>
-
-            {/* Description */}
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.35 }}
-              className="
-                text-[15px]
-
-                leading-7
-
-                text-slate-400
-              "
-            >
-              {project.description}
-            </motion.p>
-
-            {/* Status */}
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+          >
+            <span
+              className={`
                 inline-flex
                 items-center
-                gap-2
 
                 rounded-full
 
-                border
-                border-emerald-500/20
+                bg-gradient-to-r
 
-                bg-emerald-500/10
+                ${project.accent}
 
                 px-3
-                py-2
+                py-1.5
 
-                text-xs
+                text-[10px]
+                sm:text-[11px]
+
+                font-semibold
+
+                uppercase
+
+                tracking-[0.18em]
+                sm:tracking-[0.22em]
+
+                text-white
+              `}
+            >
+              {project.category}
+            </span>
+          </motion.div>
+
+          {/* Title */}
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <h2
+              className="
+                text-[28px]
+                sm:text-[32px]
+                lg:text-[38px]
+
+                font-black
+
+                leading-tight
+
+                text-white
+              "
+            >
+              {project.title}
+            </h2>
+
+            <p
+              className="
+                mt-1
+
+                text-sm
+                sm:text-base
+
                 font-medium
 
-                text-emerald-400
+                text-cyan-400
               "
             >
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              {project.subtitle}
+            </p>
+          </motion.div>
 
-              {project.status}
-            </motion.div>
+          {/* Description */}
 
-            {/* Technologies */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35 }}
+            className="
+              text-sm
+              sm:text-[15px]
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.45 }}
-            >
-              <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <motion.div
-                    key={tech}
-                    whileHover={{
-                      y: -2,
-                      scale: 1.03,
-                    }}
-                    className="
-                      rounded-full
+              leading-7
 
-                      border
-                      border-white/10
+              text-slate-400
+            "
+          >
+            {project.description}
+          </motion.p>
 
-                      bg-white/[0.04]
+          {/* Status */}
 
-                      px-3
-                      py-1.5
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="
+              inline-flex
+              items-center
+              gap-2
 
-                      text-xs
+              rounded-full
 
-                      text-slate-300
+              border
+              border-emerald-500/20
 
-                      transition-all
-                    "
-                  >
-                    {tech}
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
+              bg-emerald-500/10
 
-            {/* Contributions */}
+              px-3
+              py-2
 
-            {/* <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              <h3
-                className="
-                  mb-3
+              text-xs
 
-                  text-base
+              font-medium
 
-                  font-semibold
+              text-emerald-400
+            "
+          >
+            <span className="h-2 w-2 rounded-full bg-emerald-400" />
 
-                  text-white
-                "
-              >
-                My Contributions
-              </h3>
+            {project.status}
+          </motion.div>
 
-              <div className="space-y-2">
-                {project.contributions.map((item) => (
-                  <motion.div
-                    key={item}
-                    whileHover={{
-                      x: 4,
-                    }}
-                    className="
-                      flex
-                      items-start
-                      gap-3
-                    "
-                  >
-                    <div
-                      className="
-                        mt-[9px]
+          {/* Technologies */}
 
-                        h-1.5
-                        w-1.5
-
-                        rounded-full
-
-                        bg-cyan-400
-                      "
-                    />
-
-                    <p
-                      className="
-                        text-[14px]
-
-                        leading-6
-
-                        text-slate-400
-                      "
-                    >
-                      {item}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div> */}
-                        {/* Bottom Divider */}
-
-            {/* <motion.div
-              initial={{
-                opacity: 0,
-                scaleX: 0,
-              }}
-              animate={{
-                opacity: 1,
-                scaleX: 1,
-              }}
-              transition={{
-                delay: 0.55,
-                duration: 0.5,
-              }}
-              className="
-                origin-left
-
-                h-px
-
-                bg-gradient-to-r
-                from-cyan-400/50
-                via-white/20
-                to-transparent
-              "
-            /> */}
-
-            {/* Footer */}
-
-            {/* <motion.div
-              initial={{
-                opacity: 0,
-                y: 12,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                delay: 0.6,
-              }}
-              className="
-                flex
-                flex-wrap
-                items-center
-                justify-between
-                gap-4
-              "
-            >
-              <div>
-                <p
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.45 }}
+          >
+            <div className="flex flex-wrap gap-2">
+              {project.technologies.map((tech) => (
+                <motion.div
+                  key={tech}
+                  whileHover={
+                    isDesktop
+                      ? {
+                          y: -2,
+                          scale: 1.03,
+                        }
+                      : undefined
+                  }
                   className="
+                    rounded-full
+
+                    border
+                    border-white/10
+
+                    bg-white/[0.04]
+
+                    px-3
+                    py-1.5
+
                     text-xs
 
-                    uppercase
+                    text-slate-300
 
-                    tracking-[0.25em]
-
-                    text-slate-500
+                    transition-colors
+                    duration-300
                   "
                 >
-                  Project Type
-                </p>
+                  {tech}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+    </div>
 
-                <p
-                  className="
-                    mt-1
+    {/* Decorative Bottom Glow */}
 
-                    text-sm
+    <motion.div
+      animate={{
+        opacity: [0.08, 0.18, 0.08],
+        scale: [1, 1.08, 1],
+      }}
+      transition={{
+        duration: 8,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+      className="
+        pointer-events-none
 
-                    font-medium
+        absolute
 
-                    text-white
-                  "
-                >
-                  Enterprise Solution
-                </p>
-              </div>
+        left-1/2
+        bottom-[-90px]
 
-              <div
-                className="
-                  rounded-full
+        lg:bottom-[-120px]
 
-                  border
-                  border-cyan-500/20
+        h-[180px]
+        w-[180px]
 
-                  bg-cyan-500/10
+        sm:h-[220px]
+        sm:w-[220px]
 
-                  px-4
-                  py-2
+        lg:h-[260px]
+        lg:w-[260px]
 
-                  text-xs
-                  font-medium
+        -translate-x-1/2
 
-                  text-cyan-300
-                "
-              >
-                Private Repository
-              </div>
-            </motion.div> */}
-          </div>
-        </motion.div>
-      </div>
+        rounded-full
 
-      {/* Decorative Bottom Glow */}
+        bg-cyan-500
 
-      <motion.div
-        animate={{
-          opacity: [0.08, 0.18, 0.08],
-          scale: [1, 1.08, 1],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="
-          pointer-events-none
-
-          absolute
-
-          left-1/2
-          bottom-[-120px]
-
-          h-[260px]
-          w-[260px]
-
-          -translate-x-1/2
-
-          rounded-full
-
-          bg-cyan-500
-
-          blur-[140px]
-        "
-      />
-    </motion.div>
-  );
+        blur-[80px]
+        lg:blur-[140px]
+      "
+    />
+  </motion.div>
+);
 }

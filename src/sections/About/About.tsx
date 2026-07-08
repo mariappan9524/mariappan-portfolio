@@ -3,6 +3,7 @@ import AboutStats from "./AboutStats";
 import SectionContainer from "../../components/layout/SectionContainer";
 import AboutGlow from "./AboutGlow";
 import AboutParticles from "./AboutParticles";
+
 export default function About() {
   return (
     <section
@@ -13,29 +14,30 @@ export default function About() {
 
         scroll-mt-24
 
-        py-20
-        sm:py-24
+        py-16
+        sm:py-20
         lg:py-28
       "
     >
+      {/* Background Effects */}
       <AboutGlow />
-        <AboutParticles />
+      <AboutParticles />
 
       {/* Background Glow */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Left Glow */}
         <div
           className="
             absolute
 
-            -left-40
+            -left-36
             top-12
 
-            h-[320px]
-            w-[320px]
+            h-[300px]
+            w-[300px]
 
-            sm:h-[420px]
-            sm:w-[420px]
+            sm:h-[400px]
+            sm:w-[400px]
 
             lg:-left-56
             lg:h-[520px]
@@ -45,7 +47,7 @@ export default function About() {
 
             bg-cyan-500/10
 
-            blur-[120px]
+            blur-[80px]
             lg:blur-[170px]
           "
         />
@@ -55,14 +57,14 @@ export default function About() {
           className="
             absolute
 
-            -right-40
+            -right-36
             bottom-0
 
-            h-[320px]
-            w-[320px]
+            h-[300px]
+            w-[300px]
 
-            sm:h-[420px]
-            sm:w-[420px]
+            sm:h-[400px]
+            sm:w-[400px]
 
             lg:-right-56
             lg:h-[520px]
@@ -72,7 +74,7 @@ export default function About() {
 
             bg-violet-500/10
 
-            blur-[130px]
+            blur-[90px]
             lg:blur-[180px]
           "
         />
@@ -87,15 +89,18 @@ export default function About() {
 
             items-center
 
-            gap-14
+            gap-10
+            sm:gap-12
+            lg:gap-20
 
             lg:grid-cols-[1.08fr_0.92fr]
-            lg:gap-20
           "
         >
           <AboutContent />
 
-          <AboutStats />
+          <div className="lg:pt-6">
+            <AboutStats />
+          </div>
         </div>
       </SectionContainer>
     </section>

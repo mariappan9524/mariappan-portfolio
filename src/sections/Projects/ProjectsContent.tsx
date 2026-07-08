@@ -29,12 +29,13 @@ export default function ProjectsContent() {
     <div className="mx-auto max-w-7xl">
       {/* Top Navigation */}
 
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex items-center justify-between gap-4">
         <button
           onClick={previousProject}
           className="
             flex
             items-center
+            justify-center
             gap-2
 
             rounded-full
@@ -44,13 +45,14 @@ export default function ProjectsContent() {
 
             bg-white/5
 
-            px-5
-            py-3
+            p-3
+            sm:px-5
+            sm:py-3
 
             text-sm
             text-slate-300
 
-            transition-all
+            transition-colors
             duration-300
 
             hover:border-cyan-400/30
@@ -59,7 +61,9 @@ export default function ProjectsContent() {
           "
         >
           <ArrowLeft size={18} />
-          Previous
+          <span className="hidden sm:inline">
+            Previous
+          </span>
         </button>
 
         <div className="text-center">
@@ -69,13 +73,22 @@ export default function ProjectsContent() {
 
           <motion.p
             key={activeProject}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25 }}
+            initial={{
+              opacity: 0,
+              y: 8,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: 0.25,
+            }}
             className="
               mt-2
 
-              text-2xl
+              text-xl
+              sm:text-2xl
 
               font-bold
 
@@ -85,6 +98,7 @@ export default function ProjectsContent() {
             {(activeProject + 1)
               .toString()
               .padStart(2, "0")}
+
             <span className="text-slate-500">
               {" "}
               /{" "}
@@ -100,6 +114,7 @@ export default function ProjectsContent() {
           className="
             flex
             items-center
+            justify-center
             gap-2
 
             rounded-full
@@ -109,13 +124,14 @@ export default function ProjectsContent() {
 
             bg-white/5
 
-            px-5
-            py-3
+            p-3
+            sm:px-5
+            sm:py-3
 
             text-sm
             text-slate-300
 
-            transition-all
+            transition-colors
             duration-300
 
             hover:border-cyan-400/30
@@ -123,20 +139,42 @@ export default function ProjectsContent() {
             hover:text-white
           "
         >
-          Next
+          <span className="hidden sm:inline">
+            Next
+          </span>
+
           <ArrowRight size={18} />
         </button>
       </div>
 
       {/* Project Tabs */}
 
-      <div className="mb-6 flex flex-wrap justify-center gap-3">
+      <div
+        className="
+          mb-6
+
+          flex
+
+          gap-3
+
+          overflow-x-auto
+
+          pb-2
+
+          scrollbar-hide
+
+          sm:flex-wrap
+          sm:justify-center
+        "
+      >
         {projectData.map((project, index) => (
           <button
             key={project.id}
             onClick={() => setActiveProject(index)}
             className="
               relative
+
+              shrink-0
 
               overflow-hidden
 
@@ -149,7 +187,8 @@ export default function ProjectsContent() {
 
               font-medium
 
-              transition-all
+              transition-colors
+              duration-300
             "
           >
             {activeProject === index && (

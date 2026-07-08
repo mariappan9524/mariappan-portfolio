@@ -43,6 +43,7 @@ export default function AboutContent() {
       "
     >
       {/* Badge */}
+
       <motion.span
         variants={fadeUp}
         className="
@@ -59,13 +60,15 @@ export default function AboutContent() {
           px-4
           py-2
 
-          text-[11px]
+          text-[10px]
           sm:text-xs
 
           font-semibold
 
           uppercase
-          tracking-[0.28em]
+
+          tracking-[0.24em]
+          sm:tracking-[0.28em]
 
           text-cyan-400
         "
@@ -74,6 +77,7 @@ export default function AboutContent() {
       </motion.span>
 
       {/* Heading */}
+
       <motion.div
         variants={fadeUp}
         className="mt-5"
@@ -81,13 +85,14 @@ export default function AboutContent() {
         <Typography
           variant="h1"
           className="
-            text-4xl
+            text-[38px]
             sm:text-5xl
             lg:text-6xl
 
             font-extrabold
 
-            leading-tight
+            leading-[1.05]
+            lg:leading-tight
 
             tracking-tight
           "
@@ -102,16 +107,19 @@ export default function AboutContent() {
       </motion.div>
 
       {/* Divider */}
+
       <motion.div
         variants={fadeUp}
         className="
-          mt-6
+          mt-5
 
           mx-auto
           lg:mx-0
 
           h-[2px]
-          w-20
+
+          w-14
+          sm:w-20
 
           rounded-full
 
@@ -122,12 +130,26 @@ export default function AboutContent() {
       />
 
       {/* Description */}
+
       <motion.div
         variants={fadeUp}
-        className="mt-6 space-y-5"
+        className="
+          mt-6
+
+          space-y-4
+
+          max-w-md
+          lg:max-w-none
+
+          mx-auto
+          lg:mx-0
+        "
       >
         <Typography
           className="
+            text-[15px]
+            sm:text-base
+
             leading-7
             sm:leading-8
 
@@ -154,6 +176,9 @@ export default function AboutContent() {
 
         <Typography
           className="
+            text-[15px]
+            sm:text-base
+
             leading-7
             sm:leading-8
 
@@ -166,17 +191,21 @@ export default function AboutContent() {
       </motion.div>
 
       {/* Skills */}
+
       <motion.div
         variants={fadeUp}
         className="
           mt-8
 
           grid
+
           grid-cols-1
           sm:grid-cols-2
 
           gap-x-8
-          gap-y-4
+
+          gap-y-3
+          sm:gap-y-4
         "
       >
         {skills.map((item) => (
@@ -185,8 +214,10 @@ export default function AboutContent() {
             className="
               flex
               items-center
+
               justify-center
               lg:justify-start
+
               gap-3
             "
           >
@@ -200,19 +231,20 @@ export default function AboutContent() {
       </motion.div>
 
       {/* CTA */}
+
       <motion.div
         variants={fadeUp}
         className="
-          mt-10
+          mt-8
+          sm:mt-10
 
           flex
+
           justify-center
           lg:justify-start
         "
       >
-        <Button
-          onClick={handleDownloadResume}
-        >
+        <Button onClick={handleDownloadResume}>
           Download Resume
         </Button>
       </motion.div>
