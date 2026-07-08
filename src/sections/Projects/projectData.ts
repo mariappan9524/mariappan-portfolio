@@ -1,7 +1,7 @@
-import visitorManagement from "../../assets/images/Projects/visitor-management.png";
-import nockPoint from "../../assets/images/Projects/nockpoint.png";
-import patientKiosk from "../../assets/images/Projects/patient-kiosk.png";
-import portfolio from "../../assets/images/Projects/portfolio.png";
+import visitorManagement from "../../assets/images/Projects/visitor-management.webp";
+import nockPoint from "../../assets/images/Projects/nockpoint.webp";
+import patientKiosk from "../../assets/images/Projects/patient-kiosk.webp";
+import portfolio from "../../assets/images/Projects/portfolio.webp";
 
 export interface Project {
   id: number;

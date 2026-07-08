@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { fadeLeft } from "../../animations/hero";
 
-import profile from "../../assets/images/profile.png";
+import profile from "../../assets/images/profile.webp";
 
 import HeroStatusCard from "./HeroStatusCard";
 import HeroAvatarVideo from "./HeroAvatarVideo";
