@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import logo from "../../assets/logo/mp-logo.png";
+import logo from "../../assets/logo/mp-logo.webp";
 
 export default function LoadingScreen() {
   return (
