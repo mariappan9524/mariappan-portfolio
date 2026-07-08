@@ -1,8 +1,4 @@
-import {
-  lazy,
-  Suspense,
-} from "react";
-
+import { lazy, Suspense } from "react";
 import { AnimatePresence } from "framer-motion";
 
 import Navbar from "./components/layout/Navbar";
@@ -13,6 +9,7 @@ import BackToTop from "./components/effects/BackToTop";
 
 import useLoading from "./hooks/useLoading";
 
+// Hero stays in initial bundle
 import Hero from "./sections/Hero";
 
 // Lazy Loaded Sections
@@ -46,8 +43,10 @@ function App() {
 
           <Navbar />
 
+          {/* Hero loads immediately */}
           <Hero />
 
+          {/* Remaining sections load after Hero */}
           <Suspense fallback={null}>
             <About />
             <Skills />

@@ -6,7 +6,16 @@ import profile from "../../assets/images/profile.png";
 import HeroStatusCard from "./HeroStatusCard";
 import HeroAvatarVideo from "./HeroAvatarVideo";
 
+import usePerformanceMode from "../../hooks/usePerformanceMode";
+
 export default function HeroImage() {
+  const {
+  enableGlowAnimation,
+  enableRotation,
+  enableFloating,
+  isMobile,
+} = usePerformanceMode();
+
   return (
     <motion.div
       variants={fadeLeft}
@@ -32,19 +41,29 @@ lg:w-[420px]
 "
     >
       {/* Background Glow */}
+
       <motion.div
-        animate={{
-          scale: [1, 1.08, 1],
-          opacity: [0.18, 0.28, 0.18],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="
-          absolute
-          h-[280px]
+        animate={
+          enableGlowAnimation
+            ? {
+                scale: [1, 1.08, 1],
+                opacity: [0.18, 0.28, 0.18],
+              }
+            : undefined
+        }
+        transition={
+          enableGlowAnimation
+            ? {
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }
+            : undefined
+        }
+        className={`
+absolute
+
+h-[280px]
 w-[280px]
 
 sm:h-[320px]
@@ -55,23 +74,38 @@ md:w-[360px]
 
 lg:h-[400px]
 lg:w-[400px]
-          rounded-full
-          bg-cyan-500/20
-          blur-[110px]
-        "
+
+rounded-full
+
+bg-cyan-500/20
+
+${isMobile ? "blur-[70px]" : "blur-[110px]"}
+`}
       />
 
       {/* Premium Dashed Ring */}
+
       <motion.div
-        animate={{ rotate: 360 }}
-        transition={{
-          duration: 45,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        animate={
+          enableRotation
+            ? {
+                rotate: 360,
+              }
+            : undefined
+        }
+        transition={
+          enableRotation
+            ? {
+                duration: 45,
+                repeat: Infinity,
+                ease: "linear",
+              }
+            : undefined
+        }
         className="
-          absolute
-          h-[320px]
+absolute
+
+h-[320px]
 w-[320px]
 
 sm:h-[360px]
@@ -82,21 +116,34 @@ md:w-[404px]
 
 lg:h-[440px]
 lg:w-[440px]
-          rounded-full
-          border-[2px]
-          border-dashed
-          border-cyan-300/20
-        "
+
+rounded-full
+
+border-[2px]
+border-dashed
+border-cyan-300/20
+"
       />
 
       {/* Orbit Light */}
+
       <motion.div
-        animate={{ rotate: 360 }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        animate={
+          enableRotation
+            ? {
+                rotate: 360,
+              }
+            : undefined
+        }
+        transition={
+          enableRotation
+            ? {
+                duration: 10,
+                repeat: Infinity,
+                ease: "linear",
+              }
+            : undefined
+        }
         className="
 absolute
 
@@ -115,30 +162,33 @@ lg:w-[440px]
       >
         <div
           className="
-            absolute
-            left-1/2
-            top-0
+absolute
 
-            h-3
-            w-3
+left-1/2
+top-0
 
-            -translate-x-1/2
-            -translate-y-1/2
+h-3
+w-3
 
-            rounded-full
+-translate-x-1/2
+-translate-y-1/2
 
-            bg-cyan-300
+rounded-full
 
-            shadow-[0_0_18px_rgba(103,232,249,.95)]
-          "
+bg-cyan-300
+
+shadow-[0_0_18px_rgba(103,232,249,.95)]
+"
         />
       </motion.div>
 
       {/* Glass Ring */}
+
       <div
         className="
-          absolute
-          h-[310px]
+absolute
+
+h-[310px]
 w-[310px]
 
 sm:h-[350px]
@@ -150,38 +200,50 @@ md:w-[392px]
 lg:h-[428px]
 lg:w-[428px]
 
-          rounded-full
+rounded-full
 
-          border
-          border-white/10
+border
+border-white/10
 
-          bg-white/[0.03]
+bg-white/[0.03]
 
-          backdrop-blur-md
-        "
-      />
+backdrop-blur-sm
+lg:backdrop-blur-md
+"
+      >
+              </div>
 
       {/* Animated Gradient Ring */}
+
       <motion.div
-        animate={{
-          rotate: 360,
-          scale: [1, 1.015, 1],
-        }}
-        transition={{
-          rotate: {
-            duration: 18,
-            repeat: Infinity,
-            ease: "linear",
-          },
-          scale: {
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          },
-        }}
+        animate={
+          enableRotation
+            ? {
+                rotate: 360,
+                scale: [1, 1.015, 1],
+              }
+            : undefined
+        }
+        transition={
+          enableRotation
+            ? {
+                rotate: {
+                  duration: 18,
+                  repeat: Infinity,
+                  ease: "linear",
+                },
+                scale: {
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                },
+              }
+            : undefined
+        }
         className="
-          absolute
-          h-[316px]
+absolute
+
+h-[316px]
 w-[316px]
 
 sm:h-[356px]
@@ -193,36 +255,45 @@ md:w-[398px]
 lg:h-[434px]
 lg:w-[434px]
 
-          rounded-full
+rounded-full
 
-          bg-gradient-to-r
-          from-cyan-400
-          via-blue-500
-          to-cyan-400
+bg-gradient-to-r
+from-cyan-400
+via-blue-500
+to-cyan-400
 
-          p-[2px]
+p-[2px]
 
-          opacity-70
-        "
+opacity-70
+"
       >
         <div className="h-full w-full rounded-full bg-slate-950" />
       </motion.div>
 
       {/* Profile */}
-      <motion.div
-        animate={{
-          y: [0, -6, 0],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="
-          relative
-          z-20
 
-         h-[300px]
+      <motion.div
+        animate={
+          enableFloating
+            ? {
+                y: [0, -6, 0],
+              }
+            : undefined
+        }
+        transition={
+          enableFloating
+            ? {
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }
+            : undefined
+        }
+        className="
+relative
+z-20
+
+h-[300px]
 w-[300px]
 
 sm:h-[330px]
@@ -234,23 +305,25 @@ md:w-[360px]
 lg:h-[380px]
 lg:w-[380px]
 
-          overflow-hidden
+overflow-hidden
 
-          rounded-full
+rounded-full
 
 border-[3px]
-          border-cyan-400/30
+border-cyan-400/30
 
-          bg-slate-900
+bg-slate-900
 
-          shadow-[0_0_70px_rgba(34,211,238,0.22)]
-        "
+shadow-[0_0_70px_rgba(34,211,238,0.22)]
+"
       >
         {/* Glass Reflection */}
+
         <div
-          className="
-            absolute
-            left-6
+          className={`
+absolute
+
+left-6
 top-6
 
 sm:left-8
@@ -265,50 +338,56 @@ sm:w-24
 lg:h-28
 lg:w-28
 
-            rounded-full
+rounded-full
 
-            bg-white/10
+bg-white/10
 
-            blur-3xl
-          "
+${isMobile ? "blur-xl" : "blur-3xl"}
+`}
         />
 
-        {/* Soft Inner Highlight */}
+        {/* Inner Highlight */}
+
         <div
           className="
-            absolute
-            inset-0
+absolute
+inset-0
 
-            rounded-full
+rounded-full
 
-            bg-gradient-to-b
-            from-white/8
-            via-transparent
-            to-transparent
+bg-gradient-to-b
+from-white/8
+via-transparent
+to-transparent
 
-            z-10
-          "
+z-10
+"
         />
 
         <img
           src={profile}
           alt="Mariappan"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
           className="
-            relative
-            z-0
+relative
+z-0
 
-            h-full
-            w-full
+h-full
+w-full
 
-            object-cover
-          "
+object-cover
+"
         />
       </motion.div>
 
       {/* Avatar */}
+
       <HeroAvatarVideo />
 
       {/* Status Card */}
+
       <div className="absolute inset-0 z-40">
         <HeroStatusCard />
       </div>

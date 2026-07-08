@@ -1,20 +1,8 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import usePerformanceMode from "../../hooks/usePerformanceMode";
 
 export default function AnimatedBackground() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-
-    window.addEventListener("resize", checkMobile);
-
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const { enableGlowAnimation, isMobile } = usePerformanceMode();
 
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
@@ -34,16 +22,24 @@ export default function AnimatedBackground() {
 
       {/* Cyan Glow */}
       <motion.div
-        animate={{
-          x: [0, 120, 0],
-          y: [0, -60, 0],
-          scale: [1, 1.2, 1],
-        }}
-        transition={{
-          duration: 16,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={
+          enableGlowAnimation
+            ? {
+                x: [0, 120, 0],
+                y: [0, -60, 0],
+                scale: [1, 1.2, 1],
+              }
+            : undefined
+        }
+        transition={
+          enableGlowAnimation
+            ? {
+                duration: 16,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }
+            : undefined
+        }
         className={`
           absolute
           -left-40
@@ -52,22 +48,30 @@ export default function AnimatedBackground() {
           w-[650px]
           rounded-full
           bg-cyan-500/12
-          ${isMobile ? "blur-[90px]" : "blur-[170px]"}
+          ${isMobile ? "blur-[80px]" : "blur-[170px]"}
         `}
       />
 
       {/* Blue Glow */}
       <motion.div
-        animate={{
-          x: [0, -120, 0],
-          y: [0, 80, 0],
-          scale: [1, 1.15, 1],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={
+          enableGlowAnimation
+            ? {
+                x: [0, -120, 0],
+                y: [0, 80, 0],
+                scale: [1, 1.15, 1],
+              }
+            : undefined
+        }
+        transition={
+          enableGlowAnimation
+            ? {
+                duration: 20,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }
+            : undefined
+        }
         className={`
           absolute
           right-[-220px]
@@ -76,22 +80,30 @@ export default function AnimatedBackground() {
           w-[700px]
           rounded-full
           bg-blue-500/10
-          ${isMobile ? "blur-[100px]" : "blur-[180px]"}
+          ${isMobile ? "blur-[90px]" : "blur-[180px]"}
         `}
       />
 
       {/* Violet Glow */}
       <motion.div
-        animate={{
-          x: [0, -100, 0],
-          y: [0, 70, 0],
-          scale: [1, 1.12, 1],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={
+          enableGlowAnimation
+            ? {
+                x: [0, -100, 0],
+                y: [0, 70, 0],
+                scale: [1, 1.12, 1],
+              }
+            : undefined
+        }
+        transition={
+          enableGlowAnimation
+            ? {
+                duration: 18,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }
+            : undefined
+        }
         className={`
           absolute
           -bottom-48
@@ -100,21 +112,29 @@ export default function AnimatedBackground() {
           w-[600px]
           rounded-full
           bg-violet-500/10
-          ${isMobile ? "blur-[100px]" : "blur-[180px]"}
+          ${isMobile ? "blur-[90px]" : "blur-[180px]"}
         `}
       />
 
       {/* Accent Glow */}
       <motion.div
-        animate={{
-          x: [0, 40, 0],
-          y: [0, -40, 0],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={
+          enableGlowAnimation
+            ? {
+                x: [0, 40, 0],
+                y: [0, -40, 0],
+              }
+            : undefined
+        }
+        transition={
+          enableGlowAnimation
+            ? {
+                duration: 12,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }
+            : undefined
+        }
         className={`
           absolute
           top-[15%]
@@ -123,7 +143,7 @@ export default function AnimatedBackground() {
           w-[220px]
           rounded-full
           bg-cyan-400/8
-          ${isMobile ? "blur-[70px]" : "blur-[120px]"}
+          ${isMobile ? "blur-[60px]" : "blur-[120px]"}
         `}
       />
 
