@@ -20,7 +20,6 @@ function ExperienceSummary() {
     useReducedMotion();
 
   const {
-    isMobile,
     enableHoverEffects,
     enableGlowAnimation,
   } = usePerformanceMode();
